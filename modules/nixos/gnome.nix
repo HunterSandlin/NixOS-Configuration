@@ -1,4 +1,4 @@
-# Everything GNOME specific configs
+# System wide Gnome settings
 { pkgs, ... }:
 
 {
@@ -11,20 +11,8 @@
     variant = "";
   };
 
-  #nixpkgs.config.firefox.enableGnomeExtensions = true;
-  #services.gnome.gnome-browser-connector.enable = true;
-
-  programs.dconf = {
-    enable = true;
-    profiles.user.databases = [{
-      settings = {
-        "org/gnome/mutter" = {
-          # Enables fractional scaling
-          experimental-features = [ "scale-monitor-framebuffer" ];
-        };
-      };
-    }];
-  };
+  # Required for home-manager dconf settings to apply
+  programs.dconf.enable = true;
 
   environment.systemPackages = with pkgs; [
     gnome-tweaks
