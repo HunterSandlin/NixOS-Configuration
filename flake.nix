@@ -1,34 +1,57 @@
 # Entry point for NixOS configuration.
-
 {
   description = "Hunter's NixOS config";
 
   inputs = {
     # Pinned to stable
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-
     # Unstable instance for more up to date imports
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Home-manager tracks the same release as nixpkgs.
+    # inputs.nixpkgs.follows ensures it uses YOUR nixpkgs
+    # instead of downloading its own copy.
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager }:
+
+  # Define shared values once so they aren't duplicated
+  # between specialArgs and home-manager.extraSpecialArgs
+  let
+    system = "x86_64-linux";
+    pkgs-unstable = import nixpkgs-unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
+  in {
 
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
 
-      # specialArgs injects extra values into every module's function arguments:
-      #   - self: the flake itself, used to build absolute paths to modules
-      #   - pkgs-unstable: a separate nixpkgs instance for fresh packages
       specialArgs = {
-        inherit self;
-        pkgs-unstable = import nixpkgs-unstable {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
+        inherit self pkgs-unstable;
       };
 
       modules = [
         ./hosts/desktop/default.nix
+
+        # Wire home-manager in as a NixOS module so nixos-rebuild switch
+        # handles both system and user config in one command
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+
+          # Pass the same specialArgs down into home-manager modules
+          home-manager.extraSpecialArgs = {
+            inherit self pkgs-unstable;
+          };
+
+          home-manager.users.hunter = import "${self}/modules/home-manager/hunter.nix";
+        }
       ];
     };
 
