@@ -7,9 +7,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     # Unstable instance for more up to date imports
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Home-manager tracks the same release as nixpkgs.
-    # inputs.nixpkgs.follows ensures it uses YOUR nixpkgs
-    # instead of downloading its own copy.
+    # Sets version, ensure it's using exiting.
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +42,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-
+          home-manager.backupFileExtension = "backup"; 
           # Pass the same specialArgs down into home-manager modules
           home-manager.extraSpecialArgs = {
             inherit self pkgs-unstable;

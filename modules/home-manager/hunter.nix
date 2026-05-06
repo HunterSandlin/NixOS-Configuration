@@ -6,6 +6,7 @@
 {
   imports = [
     "${self}/modules/home-manager/firefox.nix"
+    "${self}/modules/home-manager/gnome.nix"
   ];
 
   # Required by home-manager and should not change
