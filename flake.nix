@@ -13,7 +13,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable }: {
 
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       # specialArgs injects extra values into every module's function arguments:

@@ -11,8 +11,8 @@
     variant = "";
   };
 
-  nixpkgs.config.firefox.enableGnomeExtensions = true;
-  services.gnome.gnome-browser-connector.enable = true;
+  #nixpkgs.config.firefox.enableGnomeExtensions = true;
+  #services.gnome.gnome-browser-connector.enable = true;
 
   programs.dconf = {
     enable = true;
