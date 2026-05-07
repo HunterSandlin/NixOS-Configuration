@@ -133,10 +133,10 @@
           };
 
           # Disable the built-in engines you don't want cluttering the list
-          "Google".metaData.hidden = true;
-          "Bing".metaData.hidden = true;
-          "Amazon.com".metaData.hidden = true;
-          "eBay".metaData.hidden = true;
+          "google".metaData.hidden = true;
+          "bing".metaData.hidden = true;
+          "amazondotcom-us".metaData.hidden = true;
+          "ebay".metaData.hidden = true;
         };
       };
     };

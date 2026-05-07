@@ -44,6 +44,7 @@
       openssl
       fd
       ripgrep
+      gh
     ];
   };
 }
