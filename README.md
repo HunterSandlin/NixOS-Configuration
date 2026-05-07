@@ -25,7 +25,7 @@
 
 ## 🤔 What Is This?
 
-This is a personal NixOS configuration, managed entirely declaratively. NixOS is a GNU/Linux distrobution that lets you use the nix package manager to write code that defines your system. Instead of running a command to install an app, add the app name to a file an commit! This also means you can version control your entire machine.
+This is a personal NixOS configuration, managed entirely declaratively. NixOS is a GNU/Linux distribution that lets you use the nix package manager to write code that defines your system. Instead of running a command to install an app, add the app name to a file an commit! This also means you can version control your entire machine.
 
 Every package, service, dotfile, extension, desktop setting, and system option is defined in code. If it's not in this repo, it's not on the machine.
 
