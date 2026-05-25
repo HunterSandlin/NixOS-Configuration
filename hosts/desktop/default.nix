@@ -15,6 +15,7 @@
   modules.gnome.enable = true;
   modules.dev.enable = true;
   modules.apps.enable = true;
+  modules.gaming.enable = true;
 
   networking.hostName = "nixos";
   users.users.hunter = {

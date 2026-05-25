@@ -4,9 +4,11 @@
   imports = [
     "${self}/modules/home-manager/firefox.nix"
     "${self}/modules/home-manager/gnome.nix"
+    "${self}/modules/home-manager/mtgo.nix"
   ];
 
   modules.home.gnome.enable = true;
+  modules.home.mtgo.enable = true; 
 
   # Required by home-manager and should not change
   home.username = "hunter";
