@@ -22,7 +22,7 @@
   users.users.hunter = {
     isNormalUser = true;
     description = "Hunter";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = [];
   };
   
