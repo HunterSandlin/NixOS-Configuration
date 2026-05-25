@@ -12,9 +12,13 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, rust-overlay }:
 
   # Define shared values once so they aren't duplicated
   # between specialArgs and home-manager.extraSpecialArgs
@@ -30,7 +34,7 @@
       inherit system;
 
       specialArgs = {
-        inherit self pkgs-unstable;
+        inherit self pkgs-unstable rust-overlay;
       };
 
       modules = [
