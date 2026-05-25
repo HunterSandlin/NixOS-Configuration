@@ -46,7 +46,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup"; 
+          home-manager.backupFileExtension = "hm-backup";   
           # Pass the same specialArgs down into home-manager modules
           home-manager.extraSpecialArgs = {
             inherit self pkgs-unstable;
