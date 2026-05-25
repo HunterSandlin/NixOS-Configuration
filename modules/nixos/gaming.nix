@@ -20,8 +20,8 @@
       # winetricks installs Windows runtime dependencies (dotnet, fonts etc.)
       winetricks
 
-      # Lutris handles the WINEPREFIX
-      pkgs-unstable.lutris
+      # Lutris handles the WINEPREFIX — use stable until unstable openldap is fixed
+      lutris
     ];
 
     # A wrapper script that launches MTGO with the right Wine prefix
