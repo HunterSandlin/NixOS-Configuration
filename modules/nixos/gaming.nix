@@ -2,14 +2,14 @@
 # MTGO and other Wine apps live here.
 # The Wine prefix and game data are stateful and live in ~/.local/share/,
 # not managed by Nix
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, pkgs-unstable, ... }:
 {
   options.modules.gaming.enable = lib.mkEnableOption "gaming and Wine support";
 
   config = lib.mkIf config.modules.gaming.enable {
     # Required for Wine to work properly on NixOS
-    hardware.opengl.enable = true;
-    hardware.opengl.driSupport32Bit = true;
+    hardware.graphics.enable = true;
+    hardware.graphics.enable32Bit = true;
 
     environment.systemPackages = with pkgs; [
       # wineWow64Packages supports both 32 and 64 bit — MTGO needs this
@@ -18,7 +18,7 @@
       wineWow64Packages.waylandFull
 
       # winetricks installs Windows runtime dependencies (dotnet, fonts etc.)
-      (winetricks.override { wine = wineWow64Packages.waylandFull; })
+      winetricks
 
       # Lutris handles the WINEPREFIX
       pkgs-unstable.lutris
