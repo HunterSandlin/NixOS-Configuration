@@ -9,6 +9,7 @@
     "${self}/modules/nixos/gnome.nix"
     "${self}/modules/nixos/dev.nix"
     "${self}/modules/nixos/apps.nix"
+    "${self}/modules/nixos/gaming.nix"
   ];
 
   # Enable the modules this machine needs
