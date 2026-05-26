@@ -17,27 +17,21 @@
         PULSE_SOCK="/run/user/$(id -u)/pulse/native"
 
         # Clean up leftover container from a previous crash
-        ${pkgs.docker}/bin/docker rm -f mtgo_running 2>/dev/null || true
+        docker rm -f mtgo_running 2>/dev/null || true
 
         # Create local data dirs
         mkdir -p "$LOCAL_DATA" "$BIND_DOCUMENTS"
 
         # Generate a proper Xauthority cookie for the container
-        # (empty file + nmerge is what the official run-mtgo does)
         : > "$XAUTH_FILE"
         ${pkgs.xorg.xauth}/bin/xauth nlist "$DISPLAY" \
           | sed -e 's/^..../ffff/' \
           | ${pkgs.xorg.xauth}/bin/xauth -f "$XAUTH_FILE" nmerge -
 
-        # Allow docker group to use X (only needed if uid != 1000)
-        # For uid 1000 (typical), xhost is not required; the cookie handles auth.
-        # Uncomment if you have issues:
-        # ${pkgs.xorg.xhost}/bin/xhost +local:docker
-
         # Ensure the data volume exists and is initialised
-        if ! ${pkgs.docker}/bin/docker volume inspect "$DATA_VOLUME" > /dev/null 2>&1; then
-          ${pkgs.docker}/bin/docker volume create "$DATA_VOLUME"
-          ${pkgs.docker}/bin/docker run --rm \
+        if ! docker volume inspect "$DATA_VOLUME" > /dev/null 2>&1; then
+          docker volume create "$DATA_VOLUME"
+          docker run --rm \
             -v "$DATA_VOLUME:/home/wine/.wine/host" \
             "$IMAGE" true
         fi
@@ -47,8 +41,12 @@
           ${pkgs.pulseaudio}/bin/pulseaudio --start
         fi
 
-        exec ${pkgs.docker}/bin/docker run --rm \
+        exec docker run --rm \
           -e DISPLAY \
+          -e LIBGL_ALWAYS_SOFTWARE=1 \
+          -e GALLIUM_DRIVER=llvmpipe \
+          -e MESA_NO_ERROR=1 \
+          -e WINEDEBUG=-all \
           -v "$DATA_VOLUME:/home/wine/.wine/host/" \
           -v "$DATA_VOLUME:/home/wine/.wine/drive_c/users/" \
           -v "$XSOCK:$XSOCK:rw" \
@@ -58,7 +56,10 @@
           -e TZ=America/New_York \
           --net=host \
           --ipc=host \
+          --shm-size=512m \
           --cpuset-cpus 0-3 \
+          --memory=10g \
+          --memory-swap=10g \
           --name mtgo_running \
           "$IMAGE" mtgo --sound
       '')
