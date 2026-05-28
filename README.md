@@ -1,14 +1,15 @@
 ```
          ▟█▖    ▝█▙ ▗█▛          NixOS@configuration ~
       ▗▄▄▟██▄▄▄▄▄▝█▙█▛  ▖          Linux 6.12.63
-      ▀▀▀▀▀▀▀▀▀▀▀▘▝██  ▟█▖       
+      ▀▀▀▀▀▀▀▀▀▀▀▘▝██  ▟█▖
          ▟█▛       ▝█▘▟█▛          NixOS 25.05 (Warbler)
-    ▟█████▛          ▟█████▛     
+    ▟█████▛          ▟█████▛
        ▟█▛▗█▖       ▟█▛            Hunter's Configuration
-      ▝█▛  ██▖▗▄▄▄▄▄▄▄▄▄▄▄             
-       ▝  ▟█▜█▖▀▀▀▀▀██▛▀▀▘       󱥎  A Declarative System  
-         ▟█▘ ▜█▖    ▝█▛                 
+      ▝█▛  ██▖▗▄▄▄▄▄▄▄▄▄▄▄
+       ▝  ▟█▜█▖▀▀▀▀▀██▛▀▀▘       󱥎  A Declarative System
+         ▟█▘ ▜█▖    ▝█▛
 ```
+
 ---
 
 ## 📖 Table of Contents
@@ -30,6 +31,7 @@ This is a personal NixOS configuration, managed entirely declaratively. NixOS is
 Every package, service, dotfile, extension, desktop setting, and system option is defined in code. If it's not in this repo, it's not on the machine.
 
 **What that means in practice:**
+
 - Fresh install? Clone this repo and rebuild.
 - Something broke after an update? Roll back to any previous version.
 - Curious what's installed? Read the config.
@@ -39,9 +41,9 @@ Every package, service, dotfile, extension, desktop setting, and system option i
 
 ## 🐧 Why NixOS?
 
-Most Linux distros are *imperative* meaning you install things, change things, and the system accumulates state over time. After a few years it's full of orphaned packages, half-remembered config changes, and things that work on your machine buy not someone else's.
+Most Linux distros are _imperative_ meaning you install things, change things, and the system accumulates state over time. After a few years it's full of orphaned packages, half-remembered config changes, and things that work on your machine buy not someone else's.
 
-NixOS is *declarative*, you describe the system you want, and NixOS makes it. If something isn't in the config, it doesn't exist on the system. 
+NixOS is _declarative_, you describe the system you want, and NixOS makes it. If something isn't in the config, it doesn't exist on the system.
 
 ### How is this useful?
 
@@ -50,6 +52,7 @@ NixOS is *declarative*, you describe the system you want, and NixOS makes it. If
 **Atomic upgrades and rollbacks** — Updates either fully succeed or fully fail. No half-upgraded systems. If an update breaks something, one command returns you to the previous working state — even from the boot menu if the system won't start.
 
 **`nix shell` for trying things** — Want to try a tool without installing it?
+
 ```bash
 nix shell nixpkgs#neovim
 # neovim is now available in this shell only
@@ -75,12 +78,14 @@ nix shell nixpkgs#neovim
     ├── nixos/                   # System-level modules (affect all users)
     │   ├── common.nix           # Universals — boot, locale, networking, core packages
     │   ├── gnome.nix            # Gnome environment and display manager
+    │   ├── gaming.nix           # Game specific software, includes docker
     │   ├── dev.nix              # Dev tools — languages, toolchains, services
     │   └── apps.nix             # End-user applications
     │
     └── home-manager/            # User-level modules (dotfiles, user config)
         ├── hunter.nix           # Entry point for user 'hunter' — imports user modules
         ├── firefox.nix          # Browser config — extensions, search, privacy defaults
+        ├── mtgo.nix             # Magic: The Gathering Online launcher script
         └── gnome.nix            # DesktoGnomep extensions and declarative dconf settings
 ```
 
@@ -104,7 +109,7 @@ name: "Hello, ${name}!"
 
 ### Attribute Sets Are Like Objects
 
-The curly-brace blocks you'll see everywhere are called *attribute sets*, basically key/value maps:
+The curly-brace blocks you'll see everywhere are called _attribute sets_, basically key/value maps:
 
 ```nix
 {
@@ -135,11 +140,11 @@ Every NixOS module is a function that takes arguments and returns an attribute s
 
 ### The Three Keywords You'll See Everywhere
 
-| Keyword | What it does |
-|---|---|
-| `mkEnableOption` | Creates a boolean on/off switch for a module |
-| `mkIf condition { }` | Only applies the config block if condition is true |
-| `inherit x` | Shorthand for `x = x` — passes a variable through without renaming it |
+| Keyword              | What it does                                                          |
+| -------------------- | --------------------------------------------------------------------- |
+| `mkEnableOption`     | Creates a boolean on/off switch for a module                          |
+| `mkIf condition { }` | Only applies the config block if condition is true                    |
+| `inherit x`          | Shorthand for `x = x` — passes a variable through without renaming it |
 
 ### `let ... in` Is Just Variable Binding
 
@@ -176,21 +181,23 @@ environment.systemPackages = with pkgs; [
 
 System-level modules live in `modules/nixos/`. They configure services, install system packages, and set options that apply to the whole machine. Each one is independently toggleable.
 
-| Module | Purpose |
-|---|---|
+| Module       | Purpose                                                     |
+| ------------ | ----------------------------------------------------------- |
 | `common.nix` | Always on — boot, locale, networking, audio, core CLI tools |
-| `gnome.nix` | Desktop environment, display manager, dconf |
-| `dev.nix` | Languages, toolchains, build tools, local database |
-| `apps.nix` | End-user applications and Flatpak support |
+| `gnome.nix`  | Desktop environment, display manager, dconf                 |
+| `gaming.nix` | Tools and software for running games                        |
+| `dev.nix`    | Languages, toolchains, build tools, local database          |
+| `apps.nix`   | End-user applications and Flatpak support                   |
 
 ### Home Manager Modules
 
 User-level config lives in `modules/home-manager/`. These manage dotfiles, browser config, and desktop settings that belong to the user rather than the system.
 
-| Module | Purpose |
-|---|---|
+| Module        | Purpose                                                                      |
+| ------------- | ---------------------------------------------------------------------------- |
 | `firefox.nix` | Extensions, granular privacy defaults, custom search engine, autofill config |
-| `gnome.nix` | Shell extensions installed and configured via declarative dconf settings |
+| `mtgo.nix`    | Docker script for running the game Magic: the Gathering Online (MTGO)        |
+| `gnome.nix`   | Shell extensions installed and configured via declarative dconf settings     |
 
 ---
 
@@ -243,6 +250,6 @@ sudo git commit -m "your message here"
 
 <div align="center">
 
-*The ASCII* art at the top was done by [@mewoocat](https://github.com/mewoocat) for [Microfetch](https://github.com/notashelf/microfetch), a Rust based fastfetch alternative.
+_The ASCII_ art at the top was done by [@mewoocat](https://github.com/mewoocat) for [Microfetch](https://github.com/notashelf/microfetch), a Rust based fastfetch alternative.
 
 </div>
