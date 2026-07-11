@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, pkgs-unstable, lib, config, ... }:
 {
   options.modules.minecraft.enable = lib.mkEnableOption "Minecraft (Prism Launcher)";
 
