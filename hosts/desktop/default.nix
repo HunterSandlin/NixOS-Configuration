@@ -10,6 +10,7 @@
     "${self}/modules/nixos/dev.nix"
     "${self}/modules/nixos/apps.nix"
     "${self}/modules/nixos/gaming.nix"
+    "${self}/modules/home-manager/minecraft.nix"
   ];
 
   # Enable the modules this machine needs
@@ -17,6 +18,7 @@
   modules.dev.enable = true;
   modules.apps.enable = true;
   modules.gaming.enable = true;
+  modules.minecraft.enable = true;
 
   networking.hostName = "nixos";
   users.users.hunter = {
