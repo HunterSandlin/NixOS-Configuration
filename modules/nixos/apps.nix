@@ -19,6 +19,7 @@
       libreoffice
       calibre
       discord
+      davinci-resolve
     ];
   };  
 }
