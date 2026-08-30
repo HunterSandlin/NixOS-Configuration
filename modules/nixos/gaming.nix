@@ -15,5 +15,11 @@
       xorg.xauth 
       pciutils
     ];
+
+    hardware.graphics.extraPackages = with pkgs; [
+      # ROCm for AMD GPU acceleration
+      rocmPackages.clr
+      rocmPackages.clr.icd
+    ];
   };
 }
