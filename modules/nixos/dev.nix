@@ -2,7 +2,7 @@
 { pkgs, lib, config, rust-overlay, ... }:
 {
   options.modules.dev.enable = lib.mkEnableOption "development tools";
-
+  programs.nix-ld.enable = true;
   config = lib.mkIf config.modules.dev.enable {
     nixpkgs.overlays = [ rust-overlay.overlays.default ];
     services.postgresql = {
