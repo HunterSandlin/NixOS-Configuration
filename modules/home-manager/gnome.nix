@@ -26,7 +26,6 @@
           "firefox.desktop"
           "org.gnome.Nautilus.desktop"
           "org.gnome.Console.desktop"
-          "freetube.desktop"
           "code.desktop"
           "org.gnome.Calendar.desktop"
         ];
