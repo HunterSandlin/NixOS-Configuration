@@ -113,7 +113,7 @@
       # changes it in the UI — it resets on rebuild. Remove force if you
       # want the user to be able to change it between rebuilds.
       search = {
-        #force = true; # Uncomment to prevent it from being changed
+        force = true;
         default = "Startpage";
         privateDefault = "Startpage";
 
