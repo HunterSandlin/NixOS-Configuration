@@ -1,25 +1,30 @@
 # Settings for Gnome
-{ pkgs, lib, config, ... }:
+{ pkgs, pkgs-unstable, lib, config, ... }:
+let
+  # Blur My Shell from unstable so it tracks new GNOME releases sooner.
+  # Swap to pkgs.gnomeExtensions.blur-my-shell if it fails to load.
+  blurMyShell = pkgs-unstable.gnomeExtensions.blur-my-shell;
+in
 {
   options.modules.home.gnome.enable = lib.mkEnableOption "GNOME home config";
 
   config = lib.mkIf config.modules.home.gnome.enable {
     # Install packaged extensions
-    home.packages = with pkgs.gnomeExtensions; [
-      blur-my-shell
-      just-perfection
-      caffeine
-      clipboard-indicator
+    home.packages = [
+      blurMyShell
+      pkgs.gnomeExtensions.just-perfection
+      pkgs.gnomeExtensions.caffeine
+      pkgs.gnomeExtensions.clipboard-indicator
     ];
 
     dconf.settings = {
       "org/gnome/shell" = {
         disable-user-extensions = false;
-        enabled-extensions = with pkgs.gnomeExtensions; [
-          blur-my-shell.extensionUuid
-          just-perfection.extensionUuid
-          caffeine.extensionUuid
-          clipboard-indicator.extensionUuid
+        enabled-extensions = [
+          blurMyShell.extensionUuid
+          pkgs.gnomeExtensions.just-perfection.extensionUuid
+          pkgs.gnomeExtensions.caffeine.extensionUuid
+          pkgs.gnomeExtensions.clipboard-indicator.extensionUuid
         ];
         # Pinned Apps
         favorite-apps = [
@@ -37,9 +42,6 @@
       };
 
       # --- Blur My Shell ---
-      "org/gnome/shell/extensions/blur-my-shell" = {
-        settings-version = 2;
-      };
       "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
         brightness = 0.85;
         sigma = 25;
@@ -49,14 +51,6 @@
       };
       "org/gnome/shell/extensions/blur-my-shell/coverflow-alt-tab" = {
         pipeline = "pipeline_default";
-      };
-      "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
-        blur = true;
-        brightness = 0.6;
-        pipeline = "pipeline_default_rounded";
-        sigma = 30;
-        static-blur = true;
-        style-dash-to-dock = 0;
       };
       "org/gnome/shell/extensions/blur-my-shell/lockscreen" = {
         pipeline = "pipeline_default";
