@@ -11,8 +11,8 @@
     virtualisation.docker.enable = true;
 
     environment.systemPackages = with pkgs; [
-      xorg.xhost
-      xorg.xauth 
+      xhost
+      xauth
       pciutils
     ];
 
