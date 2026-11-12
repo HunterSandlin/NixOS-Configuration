@@ -4,7 +4,7 @@
 
   inputs = {
     # Pinned to stable
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05"
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     # Unstable instance for more up to date imports
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Sets version, ensure it's using exiting.
