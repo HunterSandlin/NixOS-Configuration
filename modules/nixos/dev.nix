@@ -7,11 +7,6 @@
     nixpkgs.overlays = [ rust-overlay.overlays.default ];
     services.postgresql = {
       enable = true;
-      ensureDatabases = [ "uhclone" ];
-      ensureUsers = [{
-        name = "uhclone";
-        ensureDBOwnership = true;
-      }];
       # Overrides default pg_hba.conf to use trust auth for local connections.
       # Good for local dev, don't use on a server
       authentication = pkgs.lib.mkOverride 10 ''
@@ -29,8 +24,8 @@
       nodejs
       pnpm
       pipenv
-      nodePackages.typescript
-      nodePackages.typescript-language-server
+      typescript
+      typescript-language-server
       postgresql
       (python3.withPackages (ps: with ps; [
         pip
