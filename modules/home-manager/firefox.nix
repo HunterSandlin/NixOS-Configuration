@@ -8,7 +8,7 @@
 {
   programs.firefox = {
     enable = true;
-
+    configPath = ".mozilla/firefox";
     # --- POLICIES ---
     # These are written to Firefox's policies.json and cannot be
     # overridden by the browser at runtime.
