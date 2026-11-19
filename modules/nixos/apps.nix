@@ -9,6 +9,7 @@
       # Unstable
       pkgs-unstable.vscode
       pkgs-unstable.freetube
+      pkgs-unstable.discord
       # Stable
       microfetch
       vlc
